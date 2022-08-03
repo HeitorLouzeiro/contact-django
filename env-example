@@ -1,0 +1,5 @@
+# Django Secret Key
+SECRET_KEY = 'CHAGE-ME'  # noqa
+
+# 0 = FALSE - 1=True
+DEBUG = 1
