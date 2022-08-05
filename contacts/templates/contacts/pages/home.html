@@ -1,6 +1,54 @@
 {%extends 'base.html'%}
 {% block content %}
-<h1>
-    Contacts
-</h1>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Contacts</h1>
+</div>
+
+<!--    inicio tablela-->
+<div class="container">
+    <br>
+    <caption class="text-center">Contact list</caption>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">E-mail</th>
+                <th scope="col">Phone Number</th>
+                <th scope="col">Favorite</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for contact in contacts %}
+            <tr>
+                <td>{{contact.id}}</td>
+                <td>{{ contact.name }} {{contact.last_name}}</td>
+                <td>{{contact.email}}</td>
+                <td>{{contact.dd}} {{contact.telephone}} </td>
+                <td>
+                    {% if contact.favorite == False %}
+                    <span class="badge rounded-pill bg-info text-light">
+                        <i class="bi bi-star"></i>
+                    </span>
+                    {%else%}
+                    <span class="badge rounded-pill bg-success text-light">
+                        <i class="bi bi-star-fill"></i>
+                    </span>
+                    
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}        
+        </tbody>
+
+        <tfoot>
+            <caption>Contatos: 30</caption>
+        </tfoot>
+    </table>
+</div>
+
+<!--    fim tablela-->
+
 {% endblock content %}

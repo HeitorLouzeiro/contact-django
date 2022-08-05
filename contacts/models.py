@@ -6,11 +6,10 @@ class Contacts(models.Model):
     name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=30, blank=True)
     email = models.EmailField(max_length=50, blank=True)
-    dd = models.IntegerField()
     telephone = models.IntegerField()
-    birthday = models.DateField(blank=True)
+    birthday = models.DateField()
     favorite = models.BooleanField(default=False)
-    note = models.TextField(blank=True)
+    note = models.TextField(null=False, blank=True)
     create = models.DateField(auto_now_add=True)
 
     def __str__(self):
