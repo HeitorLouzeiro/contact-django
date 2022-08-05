@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    {% include 'parciais/head.html' %}
+    <title>{% block titulo %}{% endblock %}Contacts</title>
+</head>
+
+<body>
+    {% include 'parciais/nav.html' %}
+
+    <main class="container mt-4 mb-4">
+        {% include 'parciais/messages.html' %}
+        {% block conteudo %}{% endblock %}
+    </main>
+
+    {% include 'parciais/footer.html' %}
+
+</body>
+
+</html>
