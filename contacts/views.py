@@ -4,4 +4,4 @@ from django.shortcuts import render
 
 
 def home(request):
-    return render(request, 'contacts/pages/home.html')
+    return render(request, template_name='contacts/pages/home.html')
