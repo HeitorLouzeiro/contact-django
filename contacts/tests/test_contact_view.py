@@ -32,6 +32,26 @@ class ContactViewsTest(ContactTestBase):
             response.content.decode('utf-8')
         )
 
+    def test_contact_template_load_contact_favorite_false(self):
+        # Test is contact favorite False
+        self.make_contact(favorite=False)
+        response = self.client.get(reverse('contacts:home'))
+        content = response.content.decode('utf-8')
+
+        # Check if contatcts favorite false
+        self.assertIn(
+            '<i class="bi bi-star"></i>', content)
+
+    def test_contact_template_load_contact_favorite_true(self):
+        # Test is contact favorite True
+        self.make_contact(favorite=True)
+        response = self.client.get(reverse('contacts:home'))
+        content = response.content.decode('utf-8')
+
+        # Check if contatcts favorite True
+        self.assertIn(
+            '<i class="bi bi-star-fill"></i>', content)
+
     def test_contact_home_load_contacts(self):
         # Need a contacts for this test
         self.make_contact()
@@ -41,9 +61,6 @@ class ContactViewsTest(ContactTestBase):
 
         # Check if one contatcts exists
         self.assertIn('user', content)
-        self.assertIn('Last name', content)
-        self.assertIn('email@enmail.com', content)
-        self.assertIn('89965452', content)
 
         self.assertEqual(len(response_context_recipes), 1)
 
@@ -55,3 +72,20 @@ class ContactViewsTest(ContactTestBase):
         response = self.client.get(
             reverse('contacts:contact-detail', kwargs={'id': 1000}))
         self.assertEqual(response.status_code, 404)
+
+    def test_contact_contactDetail_load_contacts(self):
+        new_name = 'Joao'
+        # Need a contacts for this test
+        self.make_contact(name=new_name)
+        response = self.client.get(
+            reverse(
+                'contacts:contact-detail',
+                kwargs={
+                    'id': 1
+                }
+            )
+        )
+        content = response.content.decode('utf-8')
+
+        # Check if one contatcts exists
+        self.assertIn(new_name, content)
