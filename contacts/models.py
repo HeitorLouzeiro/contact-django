@@ -8,7 +8,7 @@ class Contacts(models.Model):
     email = models.EmailField(max_length=50, blank=True)
     telephone = models.IntegerField()
     favorite = models.BooleanField(default=False)
-    note = models.TextField(null=False, blank=True)
+    note = models.TextField(blank=True)
     create = models.DateField(auto_now_add=True)
 
     def __str__(self):
