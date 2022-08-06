@@ -4,51 +4,54 @@
     <h1 class="h2">Contacts</h1>
 </div>
 
-<!--    inicio tablela-->
+<!--    start table-->
 <div class="container">
     <br>
-    <caption class="text-center">Contact list</caption>
+    <div class="table-responsive">
+        <table class="table table-hover table-sm">
+            <!--thead table-->
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">E-mail</th>
+                    <th scope="col">Phone Number</th>
+                    <th scope="col">Favorite</th>
+                </tr>
+            </thead>
+            <!--Body table-->
+            <tbody>
+                {% for contact in contacts %}
+                    <tr onclick="location.href='{% url 'contacts:contact-detail' contact.pk %}'">
+                        <td>{{ contact.name }} {{contact.last_name}}</td>
+                        <td>{{contact.email}}</td>
+                        <td>{{contact.dd}} {{contact.telephone}} </td>
+                        <!--Favorite button-->
+                        <td>
+                            {% if contact.favorite == False %}
+                                <span class="badge rounded-pill bg-info text-light">
+                                    <i class="bi bi-star"></i>
+                                </span>
+                            {%else%}
+                                <span class="badge rounded-pill bg-success text-light">
+                                    <i class="bi bi-star-fill"></i>
+                                </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <div class="text-center">
+                        <h1>No Contacts found here</h1>
+                    </div>        
+                {% endfor %}        
+            </tbody>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Title</th>
-                <th scope="col">E-mail</th>
-                <th scope="col">Phone Number</th>
-                <th scope="col">Favorite</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            {% for contact in contacts %}
-            <tr>
-                <td>{{contact.id}}</td>
-                <td>{{ contact.name }} {{contact.last_name}}</td>
-                <td>{{contact.email}}</td>
-                <td>{{contact.dd}} {{contact.telephone}} </td>
-                <td>
-                    {% if contact.favorite == False %}
-                    <span class="badge rounded-pill bg-info text-light">
-                        <i class="bi bi-star"></i>
-                    </span>
-                    {%else%}
-                    <span class="badge rounded-pill bg-success text-light">
-                        <i class="bi bi-star-fill"></i>
-                    </span>
-                    
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}        
-        </tbody>
-
-        <tfoot>
-            <caption>Contatos: 30</caption>
-        </tfoot>
-    </table>
+            <tfoot>
+                <caption>Contatos: 30</caption>
+            </tfoot>
+        </table>
+    </div>
 </div>
 
-<!--    fim tablela-->
+<!--    end table-->
 
 {% endblock content %}

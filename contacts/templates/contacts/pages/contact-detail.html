@@ -1,0 +1,59 @@
+{%extends 'base.html'%}
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">{{contact.name}} {{contact.last_name}}</h1>
+    <div style="position: absolute; right: 25rem;">
+
+        <!--Favorite-->
+        {% if contact.favorite == False %}
+            <span class="badge rounded-pill bg-info text-light">
+                <i class="bi bi-star"></i>
+            </span>
+        {%else%}
+            <span class="badge rounded-pill bg-success text-light">
+                <i class="bi bi-star-fill"></i>
+            </span>
+        {% endif %}
+
+        <!--button dropdown-->
+        <div class="btn-group dropstart">
+            <button type="button" class="btn btn-light" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-three-dots-vertical"></i>
+            </button>
+
+            <ul class="dropdown-menu">
+              <!-- Dropdown menu links -->
+              <li><a class="dropdown-item" href="#"><i class="bi bi-printer"> Print out</i></a></li>
+              <li><a class="dropdown-item" href="#"><i class="bi bi-cloud-arrow-up"> Export</i></a></li>
+              <li><a class="dropdown-item" href="#"><i class="bi bi-trash"></i> Delete</a></li>
+            </ul>
+
+        </div>
+
+         <!--button Edit--> 
+        <button type="button" class="btn btn-primary">
+            Edit
+        </button>
+
+    </div>
+
+</div>
+
+<!--Card detail-->
+<div class="card" style="width: 35rem;">
+    <div class="card-body">
+
+      <h5 class="card-title">Contact Detail</h5>
+
+      <i class="bi bi-telephone">
+        <p class="card-text">{{contact.telephone}}</p>
+        <p class="card-text">{{contact.email}}</p>
+        <p class="card-text">{{contact.note}}</p>
+        <p class="card-text">{{contact.create}}</p>
+      </i>
+      
+    </div>
+
+</div>
+
+{% endblock content %}
