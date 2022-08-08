@@ -11,4 +11,9 @@ urlpatterns = [
         views.contactDetail,
         name='contact-detail'
     ),
+    path(
+        'seach/',
+        views.search,
+        name="search"
+    )
 ]
