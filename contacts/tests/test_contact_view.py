@@ -89,3 +89,16 @@ class ContactViewsTest(ContactTestBase):
 
         # Check if one contatcts exists
         self.assertIn(new_name, content)
+
+    def test_contact_search_view_function_is_correct(self):
+        view = resolve(reverse('contacts:search'))
+        self.assertIs(view.func, views.search)
+
+    def test_contact_search_loads_correct_template(self):
+        response = self.client.get(reverse('contacts:search') + '?q=test')
+        self.assertTemplateUsed(response, 'contacts/pages/home.html')
+
+    def test_contact_search_raises_404_if_no_search_term(self):
+        url = reverse('contacts:search')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
