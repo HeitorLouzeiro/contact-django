@@ -8,7 +8,10 @@
 
 
 <body>
-        
+{% block body %}
+
+
+
     <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
         <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Contacts</a>
         <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
@@ -30,12 +33,10 @@
 
         <div class="navbar-nav">
             <div class="nav-item text-nowrap">
-                <a class="nav-link px-3" href="#">Sair</a>
+                <a class="nav-link px-3" href={% url 'accounts:LogoutUser' %}>Sair</a>
             </div>
         </div>
-    </header>
-    {% include 'partial/messages.html' %}
-        
+    </header>        
     <div class="container-fluid">
         <div class="row">
             {% include 'partial/nav.html' %}
@@ -47,6 +48,7 @@
 
     
 </body>
+{% endblock body %}
 {% include 'partial/footer.html' %}
 
 </html>

@@ -1,11 +1,12 @@
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-# Create your views here.
 from django.http.response import Http404
 from django.shortcuts import get_object_or_404, render
 
 from .models import Contacts
 
 
+@login_required(login_url='accounts:loginUser', redirect_field_name='next')
 def home(request):
     template_name = 'contacts/pages/home.html'
     contacts = Contacts.objects.order_by('name',)
@@ -22,6 +23,7 @@ def home(request):
     )
 
 
+@login_required(login_url='accounts:loginUser', redirect_field_name='next')
 def contactDetail(request, id):
     template_name = 'contacts/pages/contact-detail.html'
     contact = get_object_or_404(Contacts, pk=id)
@@ -30,6 +32,7 @@ def contactDetail(request, id):
     return render(request, template_name, context)
 
 
+@login_required(login_url='accounts:loginUser', redirect_field_name='next')
 def search(request):
     search_term = request.GET.get('q', '').strip()
     template_name = 'contacts/pages/home.html'
