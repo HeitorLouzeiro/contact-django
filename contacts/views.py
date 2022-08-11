@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http.response import Http404
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render
 
 from .models import Contacts
 
@@ -9,7 +9,7 @@ from .models import Contacts
 @login_required(login_url='accounts:loginUser', redirect_field_name='next')
 def home(request):
     template_name = 'contacts/pages/home.html'
-    contacts = Contacts.objects.order_by('name',)
+    contacts = Contacts.objects.filter(user=request.user).order_by('name',)
     contactsCount = contacts.count()
 
     context = {
@@ -26,7 +26,13 @@ def home(request):
 @login_required(login_url='accounts:loginUser', redirect_field_name='next')
 def contactDetail(request, id):
     template_name = 'contacts/pages/contact-detail.html'
-    contact = get_object_or_404(Contacts, pk=id)
+    contact = Contacts.objects.filter(
+        user=request.user,
+        pk=id,
+    ).first()
+
+    if not contact:
+        raise Http404()
     context = {'contact': contact}
 
     return render(request, template_name, context)
