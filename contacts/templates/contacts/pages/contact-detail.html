@@ -1,4 +1,5 @@
 {%extends 'base.html'%}
+{% block title %}Detail {{contact.name}} {{contact.last_name}}{% endblock title %}
 {% block content %}
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">{{contact.name}} {{contact.last_name}}</h1>
@@ -25,18 +26,48 @@
               <!-- Dropdown menu links -->
               <li><a class="dropdown-item" href="#"><i class="bi bi-printer"> Print out</i></a></li>
               <li><a class="dropdown-item" href="#"><i class="bi bi-cloud-arrow-up"> Export</i></a></li>
-              <li><a class="dropdown-item" href="#"><i class="bi bi-trash"></i> Delete</a></li>
+              <li><a class="dropdown-item "data-bs-toggle="modal" data-bs-target="#deletContact" href="#"><i class="bi bi-trash"></i> Delete</a></li>
             </ul>
 
         </div>
+                <!-- Modal -->
+        <div class="modal fade" id="deletContact" data-bs-backdrop="static" data-bs-keyboard="false" >
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">{{contact.name}} {{contact.last_name}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this contact?
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-bs-dismiss="modal">No</button>
+                <form 
+                class="inline-form form-delete" 
+                action="{% url 'contacts:contact-delete' contact.id%}" 
+                method='POST'
+                >
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ contact.id }}">
+                <button type="submit" class="btn btn-danger">Yes</button>
+                </form>
+                
+                </div>
+            </div>
+            </div>
+        </div>
 
          <!--button Edit--> 
-        <button type="button" class="btn btn-primary">
-            Edit
-        </button>
+         <a href= {% url 'contacts:contact-edit' contact.id %} >
+             <button type="button" class="btn btn-primary">
+                 Edit
+             </button>
+             
+         </a>
 
     </div>
-
+    {% include 'partial/messages.html' %}
 </div>
 
 <!--Card detail-->
