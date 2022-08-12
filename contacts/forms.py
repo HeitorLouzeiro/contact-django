@@ -5,7 +5,6 @@ from contacts.models import Contacts
 
 
 class ContactForm(forms.ModelForm):
-
     class Meta:
         model = Contacts
         fields = [
@@ -16,3 +15,9 @@ class ContactForm(forms.ModelForm):
             'favorite',
             'note',
         ]
+        widgets = {
+            'telephone': forms.TextInput(
+                attrs={
+                    'data-mask': '(00) 0.0000-0000'}
+            )
+        }

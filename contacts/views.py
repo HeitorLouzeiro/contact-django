@@ -12,7 +12,8 @@ from .models import Contacts
 @login_required(login_url='accounts:loginUser', redirect_field_name='next')
 def home(request):
     template_name = 'contacts/pages/home.html'
-    contacts = Contacts.objects.filter(user=request.user).order_by('name',)
+    contacts = Contacts.objects.filter(
+        user=request.user).order_by('-favorite', 'name',)
     contactsCount = contacts.count()
 
     context = {
@@ -84,9 +85,6 @@ def contactDelete(request, id):
     if not request.POST:
         raise Http404()
 
-    POST = request.POST
-    id = POST.get('id')
-
     contact = Contacts.objects.filter(
         user=request.user,
         pk=id,
@@ -95,9 +93,7 @@ def contactDelete(request, id):
     if not contact:
         raise Http404()
 
-    contact.delete()
-    messages.success(request, 'Deleted successfully.')
-    return redirect(reverse('contacts:home'))
+    return redirect(reverse('contacts:contact-detail', args=(contact.id,)))
 
 
 @login_required(login_url='accounts:loginUser', redirect_field_name='next')

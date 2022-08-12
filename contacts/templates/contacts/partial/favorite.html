@@ -1,0 +1,9 @@
+{% if contact.favorite == False %}
+<span class="badge rounded-pill bg-info text-light">
+    <i class="bi bi-star"></i>
+</span>
+{%else%}
+<span class="badge rounded-pill bg-success text-light">
+    <i class="bi bi-star-fill"></i>
+</span>
+{% endif %}

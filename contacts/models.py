@@ -10,7 +10,7 @@ class Contacts(models.Model):
     name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=30, blank=True)
     email = models.EmailField(max_length=50, blank=True)
-    telephone = models.IntegerField()
+    telephone = models.CharField(max_length=25)
     favorite = models.BooleanField(default=False)
     note = models.TextField(blank=True)
     create = models.DateField(auto_now_add=True)

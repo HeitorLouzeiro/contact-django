@@ -10,7 +10,7 @@
 <div class="card-body w-75 border-primary mb-3 text-center">
     <div class="container">
         <div class="row">
-            <form action= {% url 'contacts:contact-register' %} method="POST">
+            <form action= {% url 'contacts:contact-register' %} method="POST" autocomplete="off" novalidate>
                 {% csrf_token %}
                 <!--start of div card -->
                 <div class="card">

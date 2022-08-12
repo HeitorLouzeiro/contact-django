@@ -10,7 +10,7 @@ class ContactsAdmin(admin.ModelAdmin):
                     'telephone', 'favorite', 'create')
     list_display_links = ('id', 'name',)
     list_editable = ('favorite',)
-    list_filter = ('name', 'telephone', 'favorite',)
+    list_filter = ('user', 'favorite',)
     list_per_page = 30
 
 

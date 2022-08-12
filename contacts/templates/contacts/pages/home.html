@@ -36,15 +36,7 @@
                         <td>{{contact.dd}} {{contact.telephone}} </td>
                         <!--Favorite button-->
                         <td>
-                            {% if contact.favorite == False %}
-                                <span class="badge rounded-pill bg-info text-light">
-                                    <i class="bi bi-star"></i>
-                                </span>
-                            {%else%}
-                                <span class="badge rounded-pill bg-success text-light">
-                                    <i class="bi bi-star-fill"></i>
-                                </span>
-                            {% endif %}
+                            {% include 'contacts/partial/favorite.html' %}
                         </td>
                     </tr>
                 {% empty %}
