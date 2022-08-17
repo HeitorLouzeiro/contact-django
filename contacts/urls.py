@@ -31,4 +31,14 @@ urlpatterns = [
         views.contactDelete,
         name='contact-delete'
     ),
+    path(
+        'import/contacts/',
+        views.importContacts,
+        name='contacts-import'
+    ),
+    path(
+        'export/contacts/',
+        views.contactsExport,
+        name='contacts-export'
+    ),
 ]

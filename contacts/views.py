@@ -1,12 +1,16 @@
+# import csv
+
+import pandas as pd
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.http import HttpResponse
 from django.http.response import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
 from .forms import ContactForm
-from .models import Contacts
+from .models import Contacts, ExcelFile
 
 
 @login_required(login_url='accounts:loginUser', redirect_field_name='next')
@@ -92,8 +96,9 @@ def contactDelete(request, id):
 
     if not contact:
         raise Http404()
-
-    return redirect(reverse('contacts:contact-detail', args=(contact.id,)))
+    contact.delete()
+    messages.success(request, 'Contact Deleted successfully.')
+    return redirect(reverse('contacts:home'))
 
 
 @login_required(login_url='accounts:loginUser', redirect_field_name='next')
@@ -122,3 +127,78 @@ def search(request):
     }
 
     return render(request, template_name, context)
+
+
+def importContacts(request):
+    if request.method == 'POST':
+        file = request.FILES['files']
+        obj = ExcelFile.objects.create(
+            file=file
+        )
+        path = str(obj.file)
+        df = pd.read_excel(path)
+        df = df.fillna('')
+        data = []
+        for row in df.values:
+            contact = Contacts(
+                name=row[1],
+                last_name=row[2],
+                email=row[3],
+                telephone=row[4],
+                favorite=row[5],
+                note=row[6],
+                create=row[7],
+                user=request.user,
+            )
+            data.append(contact)
+        Contacts.objects.bulk_create(data)
+        obj.delete()
+        messages.success(request, 'Contacts imported successfully.')
+        return redirect(reverse('contacts:home'))
+
+    return render(request, 'contacts/pages/contact-import.html')
+
+# def contactsExport(request):
+#     response = HttpResponse(content_type='text/csv')
+#     writer = csv.writer(response)
+#     writer.writerow(['Fist name', 'Last name', 'Email',
+#                     'Phone', 'Favorite', 'Note', 'Date create', ])
+#     contacts = Contacts.objects.filter(user=request.user)
+#     contactsValues = contacts.values_list(
+#         'name',
+#         'last_name',
+#         'email',
+#         'telephone',
+#         'favorite',
+#         'note',
+#         'create'
+#     )
+
+#     for contact in contactsValues:
+#         writer.writerow(contact)
+#         response['Content-Disposition'] = 'attachment;filename="contacts.csv"' # noqa
+#     return response
+
+
+def contactsExport(request):
+    objs = Contacts.objects.filter(user=request.user)
+    data = []
+    for obj in objs:
+        data.append({
+            "name": obj.name,
+            "last_name": obj.last_name,
+            "email": obj.email,
+            "telephone": obj.telephone,
+            "favorite": obj.favorite,
+            "note": obj.note,
+            "create": obj.create,
+        })
+    df = pd.DataFrame(data)
+    response = HttpResponse(content_type='text/xlsx')
+    response['Content-Disposition'] = 'attachment; filename="contacts.xlsx"'
+    df.to_excel(response)
+    return response
+
+    # return JsonResponse({
+    #     'status': 200
+    # })

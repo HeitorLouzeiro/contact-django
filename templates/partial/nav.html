@@ -10,14 +10,14 @@
         </li>          
           <hr>
           <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href={% url 'contacts:contacts-import' %}>
                   <i class="bi bi-cloud-arrow-down"></i>
                   Import
               </a>
           </li>          
           <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="bi bi-cloud-arrow-up"> Export</i>
+              <a class="nav-link" href={% url 'contacts:contacts-export' %}>
+                <i class="bi bi-cloud-arrow-up"> Export Contacts </i>
               <a>
           </li>          
           <li class="nav-item">

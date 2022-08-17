@@ -1,8 +1,9 @@
-from collections import defaultdict
+# from collections import defaultdict
 
 from django.contrib.auth.models import User
 from django.db import models
-from django.forms import ValidationError
+
+# from django.forms import ValidationError
 
 
 # Create your models here.
@@ -19,22 +20,30 @@ class Contacts(models.Model):
     def __str__(self):
         return self.name+" "+self.last_name
 
-    def clean(self, *args, **kwargs):
-        error_messages = defaultdict(list)
+    # def clean(self, *args, **kwargs):
+    #     error_messages = defaultdict(list)
 
-        contact_from_db = Contacts.objects.filter(
-            telephone__iexact=self.telephone
-        ).first()
+    #     contact_from_db = Contacts.objects.filter(
+    #         telephone__iexact=self.telephone
+    #     ).first()
 
-        if contact_from_db:
-            if contact_from_db.pk != self.pk:
-                error_messages['telephone'].append(
-                    'You already have a saved contact with this number!'
-                )
+    #     if contact_from_db:
+    #         if contact_from_db.pk != self.pk:
+    #             error_messages['telephone'].append(
+    #                 'You already have a saved contact with this number!'
+    #             )
 
-        if error_messages:
-            raise ValidationError(error_messages)
+    #     if error_messages:
+    #         raise ValidationError(error_messages)
 
     class Meta:
         verbose_name_plural = 'Contacts'
         verbose_name = 'Contact'
+
+
+class ExcelFile(models.Model):
+    file = models.FileField(upload_to="excel")
+
+    def delete(self, *args, **kwargs):
+        self.file.delete()
+        super().delete(*args, **kwargs)
