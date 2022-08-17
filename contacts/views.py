@@ -209,6 +209,6 @@ def contactsExport(request):
         return response
     else:
         messages.info(
-            request, 'Crie um contato para fazer a exportação.'
+            request, 'Create a contact to do the export.'
         )
         return render(request, 'contacts/pages/home.html')
