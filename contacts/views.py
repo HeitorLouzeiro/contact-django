@@ -127,6 +127,7 @@ def search(request):
     return render(request, template_name, context)
 
 
+@login_required(login_url='accounts:loginUser', redirect_field_name='next')
 def importContacts(request):
     if request.method == 'POST':
         file = request.FILES['files']
@@ -146,51 +147,68 @@ def importContacts(request):
         df = df.fillna('')
         # empty list
         data = []
-
-        for row in df.values:
-            # putting execel values ​​with the Contacts model fields
-            contact = Contacts(
-                name=row[1],
-                last_name=row[2],
-                email=row[3],
-                telephone=row[4],
-                favorite=row[5],
-                note=row[6],
-                create=row[7],
-                user=request.user,
+        try:
+            for row in df.values:
+                # putting execel values ​​with the Contacts model fields
+                contact = Contacts(
+                    name=row[1],
+                    last_name=row[2],
+                    email=row[3],
+                    telephone=row[4],
+                    favorite=row[5],
+                    note=row[6],
+                    create=row[7],
+                    user=request.user,
+                )
+                # adding fields in a data list.
+                data.append(contact)
+            # creating data and saving to database.
+            Contacts.objects.bulk_create(data)
+            # deleting file from database and excel folder.
+            obj.delete()
+            # sending to the home folder with the imported data.
+            messages.success(request, 'Contacts imported successfully.')
+            return redirect(reverse('contacts:home'))
+        except Exception:
+            obj.delete()
+            messages.error(
+                request, 'Erro ao importar o arquivo excel,'
+                'verifique se o excel está com os dados corretos.'
             )
-            # adding fields in a data list.
-            data.append(contact)
-        # creating data and saving to database.
-        Contacts.objects.bulk_create(data)
-        # deleting file from database and excel folder.
-        obj.delete()
-        # sending to the home folder with the imported data.
-        messages.success(request, 'Contacts imported successfully.')
-        return redirect(reverse('contacts:home'))
+            return render(request, 'contacts/pages/contact-import.html')
 
     return render(request, 'contacts/pages/contact-import.html')
 
 
+@login_required(login_url='accounts:loginUser', redirect_field_name='next')
 def contactsExport(request):
     # selected data according to user
     objs = Contacts.objects.filter(user=request.user)
     data = []
-    for obj in objs:
-        # accenting with in excel
-        data.append({
-            "name": obj.name,
-            "last_name": obj.last_name,
-            "email": obj.email,
-            "telephone": obj.telephone,
-            "favorite": obj.favorite,
-            "note": obj.note,
-            "create": obj.create,
-        })
-    # doing data processing with pandas
-    df = pd.DataFrame(data)
-    # downloading to the person's computer.
-    response = HttpResponse(content_type='text/xlsx')
-    response['Content-Disposition'] = 'attachment; filename="contacts.xlsx"'
-    df.to_excel(response)
-    return response
+    # checking if there is a record in the database
+    if len(objs) > 0:
+        for obj in objs:
+            # accenting with in excel
+            data.append({
+                "name": obj.name,
+                "last_name": obj.last_name,
+                "email": obj.email,
+                "telephone": obj.telephone,
+                "favorite": obj.favorite,
+                "note": obj.note,
+                "create": obj.create,
+            })
+        # doing data processing with pandas
+        df = pd.DataFrame(data)
+        # downloading to the person's computer.
+        response = HttpResponse(content_type='text/xlsx')
+        response['Content-Disposition'] = 'attachment; \
+        filename="contacts.xlsx"'
+
+        df.to_excel(response)
+        return response
+    else:
+        messages.info(
+            request, 'Crie um contato para fazer a exportação.'
+        )
+        return render(request, 'contacts/pages/home.html')
