@@ -1,5 +1,3 @@
-# import csv
-
 import pandas as pd
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -132,14 +130,25 @@ def search(request):
 def importContacts(request):
     if request.method == 'POST':
         file = request.FILES['files']
+        # checking file extension
+        if not file.name.endswith('.xlsx'):
+            messages.error(request, 'This is not xlsx file')
+            return render(request, 'contacts/pages/contact-import.html')
+        # putting file in database
         obj = ExcelFile.objects.create(
             file=file
         )
+        # getting the file location
         path = str(obj.file)
+        # opening excel with pandas
         df = pd.read_excel(path)
+        # handling empty columns
         df = df.fillna('')
+        # empty list
         data = []
+
         for row in df.values:
+            # putting execel values ​​with the Contacts model fields
             contact = Contacts(
                 name=row[1],
                 last_name=row[2],
@@ -150,40 +159,25 @@ def importContacts(request):
                 create=row[7],
                 user=request.user,
             )
+            # adding fields in a data list.
             data.append(contact)
+        # creating data and saving to database.
         Contacts.objects.bulk_create(data)
+        # deleting file from database and excel folder.
         obj.delete()
+        # sending to the home folder with the imported data.
         messages.success(request, 'Contacts imported successfully.')
         return redirect(reverse('contacts:home'))
 
     return render(request, 'contacts/pages/contact-import.html')
 
-# def contactsExport(request):
-#     response = HttpResponse(content_type='text/csv')
-#     writer = csv.writer(response)
-#     writer.writerow(['Fist name', 'Last name', 'Email',
-#                     'Phone', 'Favorite', 'Note', 'Date create', ])
-#     contacts = Contacts.objects.filter(user=request.user)
-#     contactsValues = contacts.values_list(
-#         'name',
-#         'last_name',
-#         'email',
-#         'telephone',
-#         'favorite',
-#         'note',
-#         'create'
-#     )
-
-#     for contact in contactsValues:
-#         writer.writerow(contact)
-#         response['Content-Disposition'] = 'attachment;filename="contacts.csv"' # noqa
-#     return response
-
 
 def contactsExport(request):
+    # selected data according to user
     objs = Contacts.objects.filter(user=request.user)
     data = []
     for obj in objs:
+        # accenting with in excel
         data.append({
             "name": obj.name,
             "last_name": obj.last_name,
@@ -193,12 +187,10 @@ def contactsExport(request):
             "note": obj.note,
             "create": obj.create,
         })
+    # doing data processing with pandas
     df = pd.DataFrame(data)
+    # downloading to the person's computer.
     response = HttpResponse(content_type='text/xlsx')
     response['Content-Disposition'] = 'attachment; filename="contacts.xlsx"'
     df.to_excel(response)
     return response
-
-    # return JsonResponse({
-    #     'status': 200
-    # })
