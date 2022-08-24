@@ -106,14 +106,13 @@ def search(request):
 
     if not search_term:
         raise Http404()
-
     contacts = Contacts.objects.filter(
         Q(
             Q(name__icontains=search_term) |
             Q(last_name__icontains=search_term) |
             Q(email__icontains=search_term) |
             Q(telephone__icontains=search_term)
-        )
+        ), user=request.user
     ).order_by('name',)
     contactsCount = contacts.count()
 
