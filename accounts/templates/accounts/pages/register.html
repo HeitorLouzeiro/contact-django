@@ -2,12 +2,12 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-Register |
+Register
 {% endblock title %}
 
 
 {% block body%}
-<section class="vh-100" style="background-color: #eee;">
+<section style="background-color: #eee;">
     <div class="container h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-lg-12 col-xl-11">
@@ -16,7 +16,7 @@ Register |
                         <div class="row justify-content-center">
                             {% if request.user.is_authenticated %}
                             <div class="row text-center">
-                                <h1>Voce está logado.</h1>
+                                <h1>You are logged in.</h1>
                                 <div class="d-grid">
                                     <div class="d-grid gap-2">
                                         <a href= {% url 'contacts:home' %} 
@@ -38,6 +38,11 @@ Register |
                                         <button type="submit" class="btn btn-primary btn-lg">Register</button>
                                     </div>
                                 </form>
+                                <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                                    <a href={% url 'accounts:loginUser' %}>
+                                        <button type="submit" class="btn btn-outline-secondary btn-lg">Login</button>
+                                    </a>
+                                </div>
                            </div>
                             <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
                                 <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"

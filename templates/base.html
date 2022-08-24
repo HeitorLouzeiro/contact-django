@@ -5,57 +5,40 @@
     {% include 'partial/head.html' %}
     <title>{% block title %}{% endblock title %} | Contacts</title>
 </head>
-
-
 <body>
-{% block body %}
-
-
-
-    <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href={% url 'contacts:home' %}>Contacts</a>
-        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
-                data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
-                aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <form class="container-fluid" action="{% url 'contacts:search' %}" method='GET'>
-            <input class="form-control form-control-dark w-100" 
-            type="search"
-            name="q"
-            value = "{{seach_taerm}}" required
-            placeholder="Search" 
-            aria-label="Search"
-            >
-            <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
-
-
-        <form class="d-grid p-2 d-md-flex justify-content-md-end" action="{% url 'accounts:LogoutUser' %}" method='POST'>
-            {% csrf_token %}
-
-            <button class="btn btn-outline-success" type="submit">Sair</button>
-            <input type="hidden" name="username" value="{{ request.user.username }}">
-        </form>
-
-        {% comment %} <form class="inline-form form-logout" action="{% url 'authors:logout' %}" method='POST'>
-            {% csrf_token %}
-            <input type="hidden" name="username" value="{{ request.user.username }}">
-        </form> {% endcomment %}
-    </header>        
-    <div class="container-fluid">
-        <div class="row">
-            {% include 'partial/nav.html' %}
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                {% block content %} {% endblock %}
-            </main>
+    {% block body %}
+    <div class="main-container d-flex">
+        {% include 'partial/nav.html' %}<div class="content">
+            <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+                <div class="container-fluid">
+                    <div class="d-flex justify-content-between d-md-none d-block">
+                        <a class="navbar-brand" href="#">Contacts</a>
+                        <button class="navbar-toggler px-1 py-0 open-btn">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+            <div class="container-fluid text-center">
+                <div class="row">
+                    <div class="dashboard-content px-3 py-2">
+                        {% block content %} {% endblock %}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-    
+    {% endblock body %}
 </body>
-{% endblock body %}
+
 {% include 'partial/footer.html' %}
+<script>
+    $('.open-btn').on('click', function () {
+        $('.sidebar').addClass('active');
+    });
+    $('.close-btn').on('click', function () {
+        $('.sidebar').removeClass('active');
+    });
+</script>
 
 </html>

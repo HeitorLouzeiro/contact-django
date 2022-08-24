@@ -1,32 +1,57 @@
-<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-    <div class="position-sticky pt-3">
-        <ul class="nav flex-column">
-            <li class="nav-item">
-                <a class="nav-link" href={% url 'contacts:contact-register' %}>
-                    <button type="button" class="badge rounded-pill text-dark">
-                        <h5><i class="bi bi-plus">Create Contact</i></h5>
-                    </button>
-                </a>
-            </li>
-            <hr>
-            <li class="nav-item">
-                <a class="nav-link" href={% url 'contacts:contacts-import' %}>
-                    <i class="bi bi-cloud-arrow-down"></i>
-                    Import
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href={% url 'contacts:contacts-export' %}>
-                    <i class="bi bi-cloud-arrow-up"> Export Contacts </i>
-                </a>
-            </li>            
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="bi bi-printer"> Print out</i>
-                </a>
-            </li>
-
-        </ul>
-        <hr>
+<div class="sidebar" id="side_nav">
+    <div class="header-box px-3 pt-3 pb-4 d-flex justify-content-between">
+        <a href={% url 'contacts:home' %} class="text-decoration-none px-3 py-2 d-block">
+            <h1 class="fs-4">
+                <span class="text-white">
+                    Contacts
+                </span>
+            </h1>
+        </a>
+        <button class="navbar-toggler d-md-none d-block close-btn px1 py-0 text-white">
+            <span class="bi bi-justify"></span>
     </div>
-</nav>
+    <ul class="list-unstyled px-2">
+        <li class="active">
+            <a href={% url 'contacts:home' %} class="text-decoration-none px-3 py-2 d-block">
+                <i class="bi bi-house-door"> Home</i>
+            </a>
+        </li>
+        <li>
+            <a href={% url 'contacts:contact-register' %} class="text-decoration-none px-3 py-2 d-block">
+                <i class="bi bi-plus">Create Contact</i>
+            </a>
+        </li>
+        <li>
+            <a href={% url 'contacts:contacts-import' %} class="text-decoration-none px-3 py-2 d-block">
+                <i class="bi bi-cloud-arrow-down"> Import Contacts</i>
+            </a>
+        </li>
+        <li>
+            <a href={% url 'contacts:contacts-export' %} class="text-decoration-none px-3 py-2 d-block">
+                <i class="bi bi-cloud-arrow-up"> Export Contacts </i>
+            </a>
+        </li>
+        <li>
+            <a href="#" class="text-decoration-none px-3 py-2 d-block">
+                <i class="bi bi-printer" onclick="window.print()"> Print out</i>
+            </a>
+        </li>
+    </ul>
+    <hr class="h-color ms-3">
+
+    <ul class="list-unstyled px-2">
+        <li>
+            <form action="{% url 'accounts:LogoutUser' %}" method='POST'>
+                {% csrf_token %}
+
+                <button class="btn btn-dark px-3 py-2 d-block" type="submit">
+                    <i class="bi bi-box-arrow-left"> Logout</i>
+                </button>
+                <input type="hidden" name="username" value="{{ request.user.username }}">
+            </form>
+            <a href="#" class="text-decoration-none px-3 py-2 d-block">
+
+            </a>
+        </li>
+    </ul>
+</div>

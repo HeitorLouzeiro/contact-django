@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block title %}
-Sign-in |
+Sign-in 
 {% endblock title %}
 {% block body %}
 <style>
@@ -27,7 +27,7 @@ Sign-in |
                         {% include 'partial/messages.html' %}
                         {% if request.user.is_authenticated %}
                             <div class="row text-center">
-                                <h1>Voce está logado.</h1>
+                                <h1>You are logged in.</h1>
                                 <div class="d-grid">
                                     <div class="d-grid gap-2">
                                         <a href= {% url 'contacts:home' %} 

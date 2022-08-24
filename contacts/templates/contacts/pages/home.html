@@ -3,11 +3,19 @@
     Home 
 {% endblock title %}
 {% block content %}
+
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Contacts</h1>
 </div>
+<div class="col-auto">
+    <form class="d-flex" action="{% url 'contacts:search' %}" method='GET'>
+        <input class="form-control me-2" type="search" name="q" value="{{search_term}}" required
+            placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+</div>
 <!--    start table-->
-<div class="container">
+<div class="row">
     <br>
     
     <caption>
@@ -16,7 +24,7 @@
     <hr>
 
     <div class="table-responsive">
-        <table class="table table-hover table-sm">
+        <table class="table table-hover align-middle table-sm">
             <!--thead table-->
             <thead>
 
@@ -51,5 +59,5 @@
 </div>
 
 <!--    end table-->
-
 {% endblock content %}
+
