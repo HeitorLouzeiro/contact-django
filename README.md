@@ -257,7 +257,7 @@ This project was a way to acquire knowledge with django and python using the Boo
 - [x] Register User
 - [x] View Contact
 - [x] Create Contact
-- [x] Register Contact
+- [x] Detail Contact
 - [x] Edit Contact
 - [x] Delete Contact
 - [x] Search Contact
