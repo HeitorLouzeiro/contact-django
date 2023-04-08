@@ -203,7 +203,7 @@ This project was a way to acquire knowledge with django and python using the Boo
 
     * Windows 
     ```sh
-     venv/scripts/activate
+     venv\scripts\activate
     ```
 
 5. Install as dependencies.
